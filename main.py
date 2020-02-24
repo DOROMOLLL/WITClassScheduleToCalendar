@@ -1,8 +1,6 @@
 import xlrd
 from ics import Event,Calendar
-import datetime
-from datetime import timedelta
-from xlsxwriter.utility import xl_rowcol_to_cell
+from datetime import timedelta,datetime
 import sys
 import string
 import re
@@ -66,7 +64,7 @@ def input_semester_start_date():
                     sys.exit()
                 else:
                     year, month, day = map(int, i.split('-'))
-                    semester_start_date = datetime.datetime(year, month, day, 0, 0, 0,tzinfo=pytz.timezone('Asia/Shanghai'))
+                    semester_start_date = datetime(year, month, day, 0, 0, 0,tzinfo=pytz.timezone('Asia/Shanghai'))
                 return 1
             except:
                 print("wrong input, input should be YYYY-MM-DD format")
