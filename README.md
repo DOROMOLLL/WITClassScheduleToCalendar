@@ -18,6 +18,7 @@
 
 運行```main.py```:
 ![输入index和第一周星期一的日期](https://github.com/DOROMOLLL/WITClassScheduleToCalendar/blob/master/images/sheet_index.png)
+![输入index和第一周星期一的日期](https://github.com/DOROMOLLL/WITClassScheduleToCalendar/blob/master/images/date.png)
 輸入課程表在excel文件中的sheet index  
 輸入本學期第一週的星期一的日期
 
