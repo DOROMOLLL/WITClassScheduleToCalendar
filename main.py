@@ -1,10 +1,11 @@
-import xlrd
-from ics import Event,Calendar
-from datetime import timedelta,datetime
-import sys
-import string
 import re
+import string
+import sys
+from datetime import timedelta, datetime
+
 import pytz
+import xlrd
+from ics import Event, Calendar
 
 weeks, times, clist = [], [], []
 lesson = []
@@ -12,10 +13,10 @@ availWeeks = []
 col_start, col_end = 1, 7
 row_start, row_end = 3, 7
 order_start, order_end = 0, 0
-sheet_index=0
-filepath="/example/example.xls"
+sheet_index = 0
+filepath = "/example/example.xls"
 # filepath specified here
-output_filepath="my.ics"
+output_filepath = "my.ics"
 # output filepath specified here
 
 def find_content(sh):
@@ -40,11 +41,11 @@ def input_sheet():
     while True:
         i = input("Input the sheet index number of the class schedule（default is 1 , \'quit\' to exit）: ")
         if i == "":
-            sheet_index=0
+            sheet_index = 0
             return 0
         if i.isnumeric():
-            sheet_index=i-1
-            return int(i-1)
+            sheet_index = i - 1
+            return int(i - 1)
         if i == "quit":
             sys.exit()
         else:
@@ -64,7 +65,7 @@ def input_semester_start_date():
                     sys.exit()
                 else:
                     year, month, day = map(int, i.split('-'))
-                    semester_start_date = datetime(year, month, day, 0, 0, 0,tzinfo=pytz.timezone('Asia/Shanghai'))
+                    semester_start_date = datetime(year, month, day, 0, 0, 0, tzinfo=pytz.timezone('Asia/Shanghai'))
                 return 1
             except:
                 print("wrong input, input should be YYYY-MM-DD format")
@@ -85,7 +86,7 @@ def get_lessons(row, col):
             lesson.pop(2)
             # remove duplicates
         lesson = list(filter(lambda x: x != "", lesson))
-        print("found lesson info "+str(lesson))
+        print("found lesson info " + str(lesson))
 
         pattern2 = re.compile(r'\d\d?')
         w = pattern2.findall(lesson[2])
@@ -121,7 +122,6 @@ def get_time_start(orderStart, week, dayInWeek):
                                     minutes=lesson_start_minute - semester_start_date.minute,
                                     seconds=-semester_start_date.second,
                                     milliseconds=-semester_start_date.microsecond)
-
 
     return lesson_start_time
 
@@ -174,9 +174,9 @@ for row in range(row_start, row_end):
     for col in range(col_start, col_end):
         get_lessons(row, col)
         if len(rf.sheet_by_index(sheet_index).cell(row, col).value) > 1:
-            print("start adding "+str(availWeeks)+" of "+lesson[0])
+            print("start adding " + str(availWeeks) + " of " + lesson[0])
             for w in availWeeks:
-                print("add week " + str(w)+" of lesson "+lesson[0])
+                print("add week " + str(w) + " of lesson " + lesson[0])
 
                 e = Event()
                 e.name = str(lesson[0] + " " + lesson[1])
@@ -184,12 +184,12 @@ for row in range(row_start, row_end):
 
                 print(tz)
                 e.begin = get_time_start(order_start, w, col)
-                e.end= get_time_end(e.begin, order_end)
+                e.end = get_time_end(e.begin, order_end)
 
                 e.location = lesson[3]
                 c.events.add(e)
                 c.events
-                print("added week " + str(w)+" of lesson "+lesson[0])
+                print("added week " + str(w) + " of lesson " + lesson[0])
 
         else:
             print("skip null lesson")
